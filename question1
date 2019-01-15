@@ -1,0 +1,53 @@
+import os
+import requests
+import shutil
+import filecmp
+zipurl1 = 'http://staging.imgtranslate.com:9999/a.zip'
+zipurl2 = 'http://staging.imgtranslate.com:9999/b.zip'
+zipurl3 = 'http://staging.imgtranslate.com:9999/c.zip'
+resp = requests.get(zipurl1)
+zname = os.path.join("test", "a.zip")
+zfile = open(zname, 'wb')
+zfile.write(resp.content)
+zfile.close()
+shutil.unpack_archive(zname,extract_dir='test')
+
+resp = requests.get(zipurl2)
+zname = os.path.join("test", "b.zip")
+zfile = open(zname, 'wb')
+zfile.write(resp.content)s
+zfile.close()
+shutil.unpack_archive(zname,extract_dir='test')
+
+resp = requests.get(zipurl3)
+zname = os.path.join("test", "c.zip")
+zfile = open(zname, 'wb')
+zfile.write(resp.content)
+zfile.close()
+shutil.unpack_archive(zname,extract_dir='test')
+
+fname1 = os.path.join("test","a")
+fname2 = os.path.join("test","b")
+fname3 = os.path.join("test","c")
+l1=os.listdir(fname1)
+l2=os.listdir(fname2)
+l3=os.listdir(fname3)
+list=[]
+
+for file in l1:
+	file=file.strip("'")
+	fp = os.path.join("test","a",file)
+	f1=open(fp,'r')
+	
+	for file1 in l2:
+		file1=file1.strip("'")
+		fp1 = os.path.join("test","b",file1)
+		f2=open(fp1,'r')
+		list1 = f1.readlines()
+		list2 = f2.readlines()
+		for i in list1:
+			for j in list2:
+				if i == j:
+					list.append(f1)
+					list.append(f2)
+print(list)
